@@ -1,17 +1,50 @@
 # Override configuration from https://github.com/jenkins-x/jenkins-x-platform/blob/master/jenkins-x-platform/values.yaml
+docker-registry:
+  enabled: false
+
 chartmuseum:
+  image:
+    repository: registry.cn-beijing.aliyuncs.com/acs-sample/jenkins-x-chartmuseum
+    tag: v0.7.1
   persistence:
+    storageClass: "nfs-client"
     size: 20Gi
+
 jenkins:
+  Master:
+    Image: registry.cn-beijing.aliyuncs.com/acs-sample/jenkins-x
+    ImageTag: 0.0.70
+    ServiceType: ClusterIP
+  Servers:
+    Global:
+      EnvVars:
+        DOCKER_REGISTRY: "harbor.njbandou.com"
+  Agent:
+    PodTemplates:
+      Maven:
+        Containers:
+          Maven:
+            Image: registry.cn-beijing.aliyuncs.com/haoshuwei/jenkins-x-builder-maven:0.1.595
   Persistence:
+    storageClass: "nfs-client"
     Size: 20Gi
-monocular:
-  mongodb:
-    persistence:
-      size: 20Gi
+
 nexus:
+  enabled: true
+  image:
+    repository: registry.cn-beijing.aliyuncs.com/acs-sample/jenkins-x-nexus
+    tag: 0.1.7
   persistence:
+    storageClass: "nfs-client"
     size: 20Gi
-tekton:
-  pvc:
-    size: 20Gi
+
+monocular:
+  enabled: false
+  heapster:
+    image:
+      repository: registry.cn-beijing.aliyuncs.com/acs-sample/jenkins-x-heapster
+      tag: v1.5.2
+    resizer:
+      image:
+        repository: registry.cn-beijing.aliyuncs.com/acs-sample/jenkins-x-heapster-addon-resizer
+        tag: 1.7
