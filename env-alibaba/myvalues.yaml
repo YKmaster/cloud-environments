@@ -4,7 +4,7 @@ docker-registry:
 
 chartmuseum:
   image:
-    repository: registry.cn-beijing.aliyuncs.com/acs-sample/jenkins-x-chartmuseum
+    repository: chartmuseum/chartmuseum
     tag: v0.7.1
   persistence:
     storageClass: "nfs-client"
@@ -12,7 +12,7 @@ chartmuseum:
 
 jenkins:
   Master:
-    Image: registry.cn-beijing.aliyuncs.com/acs-sample/jenkins-x
+    Image: jenkinsxio/jenkinsx
     ImageTag: 0.0.70
     ServiceType: ClusterIP
   Servers:
@@ -24,7 +24,7 @@ jenkins:
       Maven:
         Containers:
           Maven:
-            Image: registry.cn-beijing.aliyuncs.com/haoshuwei/jenkins-x-builder-maven:0.1.595
+            Image: harbor.njbandou.com/library/builder-jx:0.1.595
   Persistence:
     storageClass: "nfs-client"
     Size: 20Gi
@@ -32,7 +32,7 @@ jenkins:
 nexus:
   enabled: true
   image:
-    repository: registry.cn-beijing.aliyuncs.com/acs-sample/jenkins-x-nexus
+    repository: docker pull harbor.njbandou.com/library/nexus
     tag: 0.1.7
   persistence:
     storageClass: "nfs-client"
@@ -42,9 +42,9 @@ monocular:
   enabled: false
   heapster:
     image:
-      repository: registry.cn-beijing.aliyuncs.com/acs-sample/jenkins-x-heapster
+      repository: docker pull harbor.njbandou.com/library/heapster
       tag: v1.5.2
     resizer:
       image:
-        repository: registry.cn-beijing.aliyuncs.com/acs-sample/jenkins-x-heapster-addon-resizer
+        repository: docker pull harbor.njbandou.com/library/addon-resizer
         tag: 1.7
